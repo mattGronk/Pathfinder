@@ -1,0 +1,2 @@
+import Link from "next/link";import Image from "next/image";import {Compass} from "lucide-react";import {Button} from "@/components/ui/button";
+export default function NotFound(){return <main className="not-found"><Image src="/pathfinder-logo.png" width={72} height={72} alt="Pathfinder SA logo"/><span>404</span><Compass/><h1>This route isn’t on the map.</h1><p>The page may have moved, but your next step is still close.</p><Button asChild><Link href="/">Return to Pathfinder SA</Link></Button></main>}

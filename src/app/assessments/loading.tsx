@@ -1,0 +1,1 @@
+export default function LoadingAssessments(){return <main className="page-skeleton" aria-label="Loading assessments"><header><i/><i/></header><section><i/><i/><i/></section><div><i/><i/><i/><i/></div></main>}

@@ -1,0 +1,4 @@
+import fs from 'node:fs/promises';
+const sites={uct:'https://uct.ac.za',wits:'https://www.wits.ac.za',stellenbosch:'https://www.sun.ac.za',up:'https://www.up.ac.za',uj:'https://www.uj.ac.za',ukzn:'https://ukzn.ac.za',uwc:'https://www.uwc.ac.za',ufs:'https://www.ufs.ac.za',nwu:'https://www.nwu.ac.za',nmu:'https://www.mandela.ac.za',rhodes:'https://www.ru.ac.za',unisa:'https://www.unisa.ac.za',tut:'https://www.tut.ac.za',cput:'https://www.cput.ac.za',dut:'https://www.dut.ac.za',vut:'https://www.vut.ac.za'};
+await fs.mkdir('research/logos',{recursive:true});
+await Promise.all(Object.entries(sites).map(async([id,url])=>{try{const r=await fetch(url,{signal:AbortSignal.timeout(25000)});const html=await r.text();await fs.writeFile(`research/logos/${id}.html`,html);const tags=[...html.matchAll(/<(?:img|source)\b[^>]*>/gi)].map(x=>x[0]).filter(x=>/logo|crest|brand/i.test(x));console.log(id,r.status,r.url,tags.slice(0,12).join('\n'));}catch(e){console.log(id,e.message);}}));

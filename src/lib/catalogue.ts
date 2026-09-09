@@ -1,0 +1,68 @@
+export type CareerProfile = {
+  id: string; title: string; field: string; summary: string; salary: string; demand: string;
+  subjects: string[]; qualifications: string[]; skills: string[]; employers: string[]; day: string; outlook: string;
+};
+
+const roles: Array<[string,string,string,string,string,string,string[],string[],string[]]> = [
+  ["data-analyst","Data analyst","Technology & analytics","Turn messy information into clear decisions.","R240k–R540k","High",["Mathematics","Information Technology","Accounting"],["BSc Data Science","BCom Information Systems","Diploma in ICT"],["SQL","Spreadsheets","Data visualisation"]],
+  ["software-developer","Software developer","Technology","Build, test and improve digital products.","R300k–R900k","Very high",["Mathematics","Information Technology","Physical Sciences"],["BSc Computer Science","BEng Software","Diploma in ICT"],["Programming","Testing","Problem solving"]],
+  ["cybersecurity","Cybersecurity analyst","Technology & risk","Protect systems, investigate threats and reduce digital risk.","R300k–R850k","Very high",["Mathematics","Information Technology","English"],["BSc Cybersecurity","BSc Computer Science","Industry certifications"],["Networks","Risk analysis","Incident response"]],
+  ["cloud-engineer","Cloud engineer","Technology infrastructure","Design and run reliable cloud systems.","R420k–R1.1m","Very high",["Mathematics","Information Technology","Physical Sciences"],["BSc IT","BSc Computer Science","Cloud certifications"],["Linux","Networking","Automation"]],
+  ["ux-designer","UX/UI designer","Design & technology","Research users and design clear digital experiences.","R220k–R600k","High",["Design","Visual Arts","English"],["BA Interaction Design","Diploma in Multimedia","Portfolio route"],["Research","Prototyping","Visual systems"]],
+  ["product-manager","Product manager","Business & technology","Coordinate people, evidence and priorities to improve a product.","R420k–R1.1m","High",["Business Studies","Mathematics","English"],["BCom","BSc Information Systems","Field experience"],["Prioritisation","Communication","Analytics"]],
+  ["accountant","Chartered accountant","Finance","Build reliable financial records and advise organisations.","R360k–R1.2m","High",["Accounting","Mathematics","English"],["SAICA-accredited BCom","Postgraduate accounting route"],["Financial reporting","Audit","Ethics"]],
+  ["actuary","Actuary","Finance & risk","Model uncertainty and price long-term financial risk.","R500k–R1.5m","High",["Mathematics","Physical Sciences","Accounting"],["BSc Actuarial Science","Professional examinations"],["Statistics","Modelling","Risk communication"]],
+  ["investment-banking","Investment banking analyst","Finance","Analyse companies and support complex transactions.","R397k–R797k+","Selective",["Mathematics","Accounting","Economics"],["BCom Finance","BSc Mathematics","Honours often preferred"],["Financial modelling","Valuation","Presentation"]],
+  ["financial-planner","Financial planner","Finance & people","Help clients plan savings, protection and investments.","R240k–R750k","Steady",["Mathematics","Accounting","Business Studies"],["BCom Financial Planning","RE5 and regulatory requirements"],["Planning","Client communication","Compliance"]],
+  ["doctor","Medical doctor","Health sciences","Diagnose, treat and coordinate patient care.","R816k–R1.3m","High",["Life Sciences","Physical Sciences","Mathematics"],["MBChB","Internship and community service"],["Clinical reasoning","Communication","Resilience"]],
+  ["nurse","Professional nurse","Health sciences","Deliver hands-on patient care across health settings.","R260k–R520k","Very high",["Life Sciences","English","Mathematics"],["Bachelor of Nursing","Diploma routes where accredited"],["Patient care","Observation","Teamwork"]],
+  ["pharmacist","Pharmacist","Health sciences","Protect medicine safety and guide effective treatment.","R420k–R780k","High",["Life Sciences","Physical Sciences","Mathematics"],["BPharm","Internship and community service"],["Pharmacology","Accuracy","Patient counselling"]],
+  ["physiotherapist","Physiotherapist","Health & rehabilitation","Help people restore movement and function.","R280k–R620k","High",["Life Sciences","Physical Sciences","Mathematics"],["BSc Physiotherapy","Community service"],["Assessment","Movement science","Coaching"]],
+  ["occupational-therapist","Occupational therapist","Health & rehabilitation","Help people take part in daily life, study and work.","R280k–R620k","High",["Life Sciences","English","Mathematics"],["BSc Occupational Therapy","Community service"],["Empathy","Activity analysis","Care planning"]],
+  ["psychologist","Psychologist","Behavioural health","Assess behaviour and support evidence-based psychological care.","R300k–R900k","High",["Life Sciences","English","Mathematics"],["Psychology degree","Honours and professional master’s","HPCSA registration"],["Listening","Assessment","Ethics"]],
+  ["civil-engineer","Civil engineer","Engineering","Design infrastructure people rely on every day.","R360k–R900k","High",["Mathematics","Physical Sciences","Engineering Graphics"],["BEng Civil","BSc Engineering","Diploma plus registration route"],["Structural analysis","Project work","Safety"]],
+  ["electrical-engineer","Electrical engineer","Engineering","Design electrical, energy and control systems.","R380k–R950k","High",["Mathematics","Physical Sciences","Information Technology"],["BEng Electrical","BSc Engineering"],["Circuit design","Systems thinking","Testing"]],
+  ["renewable-energy","Renewable energy project coordinator","Energy & sustainability","Coordinate clean-energy projects from planning to delivery.","R360k–R850k","Very high",["Geography","Physical Sciences","Mathematics"],["Engineering degree","BSc Environmental Science","Project qualification"],["Project planning","Energy systems","Stakeholder work"]],
+  ["quantity-surveyor","Quantity surveyor","Built environment","Control construction costs and contracts.","R300k–R850k","High",["Mathematics","Accounting","Engineering Graphics"],["BSc Quantity Surveying","Diploma route"],["Costing","Contracts","Measurement"]],
+  ["electrician","Electrician","Skilled trades","Install, test and repair electrical systems safely.","R220k–R600k","Very high",["Mathematics","Physical Sciences","Engineering Graphics"],["TVET electrical programme","Apprenticeship","Trade test"],["Fault finding","Safety","Practical skill"]],
+  ["teacher","Teacher","Education","Plan learning and help learners build knowledge and confidence.","R250k–R560k","High",["English","Mathematics","Relevant teaching subjects"],["BEd","Bachelor’s plus PGCE","SACE registration"],["Teaching","Planning","Classroom leadership"]],
+  ["lawyer","Attorney","Law","Research law, advise clients and build careful arguments.","R182k–R766k","Competitive",["English","History","Business Studies"],["LLB","Practical vocational training","Admission requirements"],["Research","Writing","Negotiation"]],
+  ["social-worker","Social worker","Community services","Support people and communities through difficult circumstances.","R220k–R480k","High",["English","Life Sciences","History"],["Bachelor of Social Work","SACSSP registration"],["Case work","Empathy","Safeguarding"]],
+  ["supply-chain","Supply chain analyst","Logistics","Improve how goods, information and inventory move.","R300k–R720k","High",["Mathematics","Geography","Business Studies"],["BCom Supply Chain","Diploma in Logistics"],["Forecasting","Operations","Negotiation"]],
+  ["marketing","Digital marketing specialist","Marketing","Plan campaigns and use evidence to grow demand.","R240k–R600k","High",["Business Studies","English","Design"],["BCom Marketing","Diploma in Marketing","Portfolio route"],["Copywriting","Analytics","Campaign planning"]],
+  ["hr","Human resources practitioner","People operations","Build fair people processes and support workplace performance.","R260k–R650k","Steady",["Business Studies","English","Life Orientation"],["BCom Human Resources","Diploma in HR"],["Employee relations","Policy","Communication"]],
+  ["journalist","Journalist","Media","Investigate stories and explain what matters clearly.","R180k–R520k","Competitive",["English","History","Geography"],["BA Journalism","Diploma in Journalism","Portfolio route"],["Research","Interviewing","Writing"]],
+  ["graphic-designer","Graphic designer","Creative industries","Turn ideas into useful visual communication.","R180k–R480k","Competitive",["Visual Arts","Design","English"],["BA Visual Communication","Diploma in Graphic Design","Portfolio route"],["Typography","Layout","Creative software"]],
+  ["agricultural-scientist","Agricultural scientist","Agriculture","Use science to improve crops, soil and food systems.","R280k–R700k","High",["Life Sciences","Physical Sciences","Geography"],["BSc Agriculture","BSc Plant or Soil Science"],["Field research","Data analysis","Sustainability"]],
+  ["environmental-scientist","Environmental scientist","Environment","Measure environmental impact and guide responsible decisions.","R280k–R720k","High",["Geography","Life Sciences","Physical Sciences"],["BSc Environmental Science","BSc Geography"],["Fieldwork","GIS","Reporting"]],
+  ["logistics-manager","Logistics manager","Operations","Coordinate transport, warehouses and delivery performance.","R360k–R900k","High",["Business Studies","Geography","Mathematics"],["BCom Logistics","Diploma in Supply Chain"],["Operations","Planning","Leadership"]],
+];
+
+export const careerCatalogue: CareerProfile[] = roles.map(([id,title,field,summary,salary,demand,subjects,qualifications,skills]) => ({
+  id,title,field,summary,salary,demand,subjects,qualifications,skills,
+  employers: field.includes("Health") ? ["Public health services","Netcare","Life Healthcare"] : field.includes("Finance") ? ["Standard Bank","FNB","Investec"] : field.includes("Technology") ? ["Vodacom","Takealot","Discovery"] : ["Public sector","Large employers","Specialist firms"],
+  day: `A typical day combines ${skills[0].toLowerCase()}, ${skills[1].toLowerCase()} and clear communication with colleagues or clients.`,
+  outlook: `${demand} demand indicator. Confirm current vacancies, registration rules and regional demand before committing.`,
+}));
+
+export type UniversityProfile = { id:string; name:string; domain:string; location:string; type:string; focus:string; fees:string; url:string };
+export const universityCatalogue: UniversityProfile[] = [
+  ["uct","University of Cape Town","uct.ac.za","Cape Town","University","Science, commerce, engineering, humanities and health sciences","Programme-specific 2026 fees","https://uct.ac.za"],
+  ["wits","University of the Witwatersrand","wits.ac.za","Johannesburg","University","Commerce, engineering, health sciences and humanities","Programme-specific 2026 fees","https://wits.ac.za"],
+  ["stellenbosch","Stellenbosch University","sun.ac.za","Stellenbosch","University","Science, engineering, commerce, health and humanities","Programme-specific 2026 fees","https://sun.ac.za"],
+  ["up","University of Pretoria","up.ac.za","Pretoria","University","Business, engineering, veterinary science, law and health","Programme-specific 2026 fees","https://up.ac.za"],
+  ["uj","University of Johannesburg","uj.ac.za","Johannesburg","University","Business, technology, design, engineering and humanities","Programme-specific 2026 fees","https://uj.ac.za"],
+  ["ukzn","University of KwaZulu-Natal","ukzn.ac.za","Durban & Pietermaritzburg","University","Health, science, agriculture, law and humanities","Programme-specific 2026 fees","https://ukzn.ac.za"],
+  ["uwc","University of the Western Cape","uwc.ac.za","Cape Town","University","Health, law, natural sciences and humanities","Programme-specific 2026 fees","https://uwc.ac.za"],
+  ["ufs","University of the Free State","ufs.ac.za","Bloemfontein","University","Health, agriculture, education, law and business","Programme-specific 2026 fees","https://ufs.ac.za"],
+  ["nwu","North-West University","nwu.ac.za","Potchefstroom, Mahikeng & Vanderbijlpark","University","Business, engineering, education, health and science","Programme-specific 2026 fees","https://nwu.ac.za"],
+  ["nmu","Nelson Mandela University","mandela.ac.za","Gqeberha","University","Engineering, business, health, education and humanities","Programme-specific 2026 fees","https://mandela.ac.za"],
+  ["rhodes","Rhodes University","ru.ac.za","Makhanda","University","Journalism, humanities, science, law and commerce","Programme-specific 2026 fees","https://ru.ac.za"],
+  ["unisa","University of South Africa","unisa.ac.za","Distance learning","Distance university","Flexible distance qualifications across South Africa","Charged per module","https://unisa.ac.za"],
+  ["tut","Tshwane University of Technology","tut.ac.za","Gauteng, Mpumalanga & Limpopo","University of technology","Applied technology, design, business and engineering","Programme-specific 2026 fees","https://tut.ac.za"],
+  ["cput","Cape Peninsula University of Technology","cput.ac.za","Cape Town","University of technology","Applied sciences, technology, design and business","Programme-specific 2026 fees","https://cput.ac.za"],
+  ["dut","Durban University of Technology","dut.ac.za","Durban & Pietermaritzburg","University of technology","Technology, design, health and management","Programme-specific 2026 fees","https://dut.ac.za"],
+  ["vut","Vaal University of Technology","vut.ac.za","Vanderbijlpark","University of technology","Engineering, applied sciences, business and design","Programme-specific 2026 fees","https://vut.ac.za"],
+].map(([id,name,domain,location,type,focus,fees,url]) => ({id,name,domain,location,type,focus,fees,url}));
+
+

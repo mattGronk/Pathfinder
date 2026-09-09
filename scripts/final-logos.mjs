@@ -1,0 +1,11 @@
+import fs from 'node:fs/promises';
+import sharp from 'sharp';
+const sources={up:'https://www.chr.up.ac.za/images/spaceholders/up_logo_final.jpg',stellenbosch:'https://img.gothru.org/1370/sv_wm3mr5DyxnGQil9PUa/overlay/assets/20220927145612.95ruaU.jpg?save=optimize',uj:'https://ujcontent.uj.ac.za/view/fileRedirect?download=true&filePid=136262500007691&instCode=27UOJ_INST'};
+const manifest=JSON.parse(await fs.readFile('research/logo-sources.json','utf8'));
+for(const [id,url] of Object.entries(sources)){try{const r=await fetch(url,{signal:AbortSignal.timeout(20000)});if(!r.ok)throw new Error(`HTTP ${r.status}`);const b=Buffer.from(await r.arrayBuffer());const meta=await sharp(b).metadata();await sharp(b).resize({width:900,height:350,fit:'inside',withoutEnlargement:true}).png().toFile(`public/universities/${id}.png`);manifest[id]={source:url,verified:'2026-09-06',file:`/universities/${id}.png`,...id==='stellenbosch'?{officialPage:'https://www.su.ac.za/en/faculties/engineering/departments/civil-engineering/research/geotechnical-and-transport-engineering'}:{}};console.log(id,meta.width,meta.height);}catch(e){console.log(id,e.message);}}
+manifest.cput={source:'https://www.cput.ac.za/images/cput-logo-white.svg',verified:'2026-09-06',file:'/universities/cput.png'};
+for(const [id,item] of Object.entries(manifest))item.darkBackground=['uct','cput','vut'].includes(id);
+await fs.writeFile('research/logo-sources.json',JSON.stringify(manifest,null,2));
+const files=await fs.readdir('public/universities');const inputs=[];
+for(let i=0;i<files.length;i++){const id=files[i].replace('.png','');let b=await sharp(`public/universities/${files[i]}`).flatten({background:manifest[id]?.darkBackground?'#143456':'#fff'}).resize({width:260,height:130,fit:'contain',background:manifest[id]?.darkBackground?'#143456':'#fff'}).png().toBuffer();inputs.push({input:b,left:(i%3)*300+20,top:Math.floor(i/3)*180+30});inputs.push({input:Buffer.from(`<svg width="280" height="25"><text x="5" y="18" font-size="16">${files[i]}</text></svg>`),left:(i%3)*300+20,top:Math.floor(i/3)*180+5});}
+await sharp({create:{width:900,height:Math.ceil(files.length/3)*180,channels:3,background:'#eee'}}).composite(inputs).png().toFile('research/logos/final-montage.png');

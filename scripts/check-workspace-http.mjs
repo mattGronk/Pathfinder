@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+const origin=process.argv[2]??'http://localhost:3100';
+for(const [path,expected] of [['/solutions/for-students','You don’t need every answer.'],['/solutions/for-parents','A better conversation'],['/solutions/for-schools','Give every learner'],['/dashboard/demo','INTERACTIVE DEMO'],['/upgrade','A little direction.']]){const r=await fetch(origin+path);const html=await r.text();assert.equal(r.status,200,path);assert(html.includes(expected),path);console.log('PASS',path);}
+async function assertBlocked(headers={}){const r=await fetch(origin+'/dashboard',{redirect:'manual',headers});const html=await r.text();assert((r.status===307&&r.headers.get('location')?.includes('/account?next='))||(r.status===200&&html.includes('__next-page-redirect')&&html.includes('/account?next=/dashboard')));assert(!html.includes('CV studio'));}
+await assertBlocked();console.log('PASS unauthenticated dashboard redirects without private content');
+await assertBlocked({cookie:'pathfinder_access=fake.full'});console.log('PASS forged browser tier cookie ignored');
+const home=await fetch(origin+'/').then(r=>r.text());assert(!home.includes('id\\":\\"actuary'));assert(!home.includes('Actuary'));assert(home.includes('universities%2Fuct.png'));assert(!home.includes('google.com/s2/favicons'));console.log('PASS public catalogue sample and local logos');
+const assessments=await fetch(origin+'/assessments').then(r=>r.text());assert(!assessments.includes('Ten years from now, which life sounds best?'));console.log('PASS premium questions absent from public response');
+const response=await fetch(origin+'/api/paystack/verify',{method:'POST',headers:{origin,'Content-Type':'application/json'},body:JSON.stringify({reference:'forged123'})});assert.equal(response.status,401);console.log('PASS verification requires account');
+const crossOrigin=await fetch(origin+'/api/paystack/initialize',{method:'POST',headers:{origin:'https://unrelated.invalid','Content-Type':'application/json'},body:'{"tier":"full"}'});assert.equal(crossOrigin.status,403);console.log('PASS cross-origin checkout blocked');
+const logos=JSON.parse(await fs.readFile('research/logo-sources.json','utf8'));assert.equal(Object.keys(logos).length,16);for(const [id,item] of Object.entries(logos)){const r=await fetch(origin+item.file);assert.equal(r.status,200,id);assert(r.headers.get('content-type')?.startsWith('image/'),id);assert((await r.arrayBuffer()).byteLength>500,id);}console.log('PASS all 16 official logo assets served');
+const unknown=await fetch(origin+'/solutions/for-unknown');assert.equal(unknown.status,404);console.log('PASS invalid audience returns 404');

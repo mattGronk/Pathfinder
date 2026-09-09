@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import ts from 'typescript';
+const returnUrl=new URL('../src/lib/safe-return.ts',import.meta.url).href;
+const source=(await fs.readFile(new URL('../src/lib/auth-redirect.ts',import.meta.url),'utf8')).replace('"./safe-return"',JSON.stringify(returnUrl));
+const compiled=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
+const {recoveryCallbackUrl,authenticationDestination,emailOtpType}=await import(`data:text/javascript;base64,${Buffer.from(compiled).toString('base64')}`);
+test('reset requests target the current Vercel callback and password form',()=>{const url=new URL(recoveryCallbackUrl('https://pathfinder-sa-zeta.vercel.app'));assert.equal(url.origin,'https://pathfinder-sa-zeta.vercel.app');assert.equal(url.pathname,'/auth/callback');assert.equal(url.searchParams.get('type'),'recovery');assert.equal(url.searchParams.get('next'),'/account/update-password');});
+test('recovery links always open the password form even without a next parameter',()=>{for(const next of [null,'/dashboard','https://old.chatgpt.site','//evil'])assert.equal(authenticationDestination('recovery',next),'/account/update-password');});
+test('ordinary sign-in destinations remain safe',()=>{assert.equal(authenticationDestination('email','/onboarding'),'/onboarding');assert.equal(authenticationDestination('email','//evil'),'/dashboard');});
+test('only supported email token types reach Supabase verification',()=>{assert.equal(emailOtpType('recovery'),'recovery');assert.equal(emailOtpType('email'),'email');assert.equal(emailOtpType('unsupported'),null);assert.equal(emailOtpType(null),null);});

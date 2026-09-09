@@ -1,0 +1,5 @@
+/research
+/scripts
+/supabase
+*.test.ts
+.env*

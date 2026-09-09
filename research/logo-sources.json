@@ -1,0 +1,99 @@
+{
+  "nwu": {
+    "source": "https://www.nwu.ac.za/sites/www.nwu.ac.za/files/NWU-logo-pers_1.png",
+    "verified": "2026-09-06",
+    "darkBackground": false,
+    "file": "/universities/nwu.png"
+  },
+  "dut": {
+    "source": "https://www.dut.ac.za/wp-content/uploads/2026/03/DUT-Logo_new-1.png",
+    "verified": "2026-09-06",
+    "darkBackground": false,
+    "file": "/universities/dut.png"
+  },
+  "unisa": {
+    "source": "https://www.unisa.ac.za/static/corporate_web/Content/Temporary/unisa_logo_tagline.svg",
+    "verified": "2026-09-06",
+    "darkBackground": false,
+    "file": "/universities/unisa.png"
+  },
+  "tut": {
+    "source": "https://www.tut.ac.za/media/tshwane-interim/site-assets/images/tut-logo.svg",
+    "verified": "2026-09-06",
+    "darkBackground": false,
+    "file": "/universities/tut.png"
+  },
+  "uwc": {
+    "source": "https://uwc-za.b-cdn.net/files/images/UWC-2025-trilingual-landscape.svg",
+    "verified": "2026-09-06",
+    "darkBackground": false,
+    "file": "/universities/uwc.png"
+  },
+  "uct": {
+    "source": "https://uct.ac.za/themes/custom/blip_uct/logo.svg",
+    "verified": "2026-09-06",
+    "darkBackground": true,
+    "file": "/universities/uct.png"
+  },
+  "vut": {
+    "source": "https://vut.ac.za/wp-content/uploads/2026/03/Vaal-University-of-Technology-60th-logo-scaled.webp",
+    "verified": "2026-09-06",
+    "darkBackground": true,
+    "file": "/universities/vut.png"
+  },
+  "wits": {
+    "source": "https://www.wits.ac.za/media/wits-university-style-assets/images/wits-logo.svg",
+    "verified": "2026-09-06",
+    "darkBackground": false,
+    "file": "/universities/wits.png"
+  },
+  "ufs": {
+    "source": "https://www.ufs.ac.za/images/librariesprovider5/ufs_redesign_2021/ufsheaderlogo.svg?sfvrsn=15b37820_3",
+    "verified": "2026-09-06",
+    "darkBackground": false,
+    "file": "/universities/ufs.png"
+  },
+  "ukzn": {
+    "source": "https://ukzn.ac.za/wp-content/uploads/2020/03/Transp_bg.png",
+    "verified": "2026-09-06",
+    "darkBackground": false,
+    "file": "/universities/ukzn.png"
+  },
+  "nmu": {
+    "source": "https://www.mandela.ac.za/App_Themes/global/images/logo-white.png",
+    "verified": "2026-09-06",
+    "darkBackground": false,
+    "file": "/universities/nmu.png"
+  },
+  "rhodes": {
+    "source": "https://www.ru.ac.za/media/rhodesuniversity/styleassets/2019v6/images/RU_Logo_1.png",
+    "verified": "2026-09-06",
+    "darkBackground": false,
+    "file": "/universities/rhodes.png"
+  },
+  "uj": {
+    "source": "https://news.uj.ac.za/wp-content/uploads/2023/03/uj-logo.jpg",
+    "verified": "2026-09-06",
+    "file": "/universities/uj.png",
+    "darkBackground": false
+  },
+  "up": {
+    "source": "https://www.chr.up.ac.za/images/spaceholders/up_logo_final.jpg",
+    "verified": "2026-09-06",
+    "file": "/universities/up.png",
+    "darkBackground": false
+  },
+  "stellenbosch": {
+    "source": "https://img.gothru.org/1370/sv_wm3mr5DyxnGQil9PUa/overlay/assets/20220927145612.95ruaU.jpg?save=optimize",
+    "verified": "2026-09-06",
+    "file": "/universities/stellenbosch.png",
+    "officialPage": "https://www.su.ac.za/en/faculties/engineering/departments/civil-engineering/research/geotechnical-and-transport-engineering",
+    "darkBackground": false
+  },
+  "cput": {
+    "source": "https://www.cput.ac.za/images/cput-logo-white.svg",
+    "verified": "2026-09-06",
+    "file": "/universities/cput.png",
+    "darkBackground": true
+  }
+}
