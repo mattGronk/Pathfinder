@@ -791,3 +791,26 @@ h1, h2, h3, h4, h5, h6, button, input, select, textarea, nav, .brand, .eyebrow,
 .signal-nav {display:flex;justify-content:space-between;}
 .signal-nav>nav {flex:1;min-width:0;}
 @media(max-width:1200px){.signal-nav>nav {order:3;flex-basis:100%;display:flex;justify-content:flex-start;}}
+
+/* Keep the homepage library compact until the visitor chooses to browse. */
+.home-career-dropdown { border: 1px solid var(--line); border-radius: 22px; background: #fff; }
+.home-career-dropdown > summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 28px; cursor: pointer; list-style: none; font-size: 1.2rem; font-weight: 800; color: #101828; }
+.home-career-dropdown > summary::-webkit-details-marker { display: none; }
+.home-career-dropdown > summary:focus-visible { outline: 3px solid #0057ff; outline-offset: 4px; border-radius: 22px; }
+.home-career-dropdown > summary > svg { flex-shrink: 0; color: #0057ff; }
+.home-career-dropdown[open] > summary > svg { transform: rotate(180deg); }
+.home-career-count { display: inline-block; margin-left: 12px; font-size: 1rem; font-weight: 600; color: #667085; }
+.home-career-content { padding: 0 24px 24px; }
+.home-career-dropdown .signal-card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.home-career-dropdown .signal-career { min-width: 0; overflow-wrap: anywhere; }
+.home-career-pagination { display: flex; flex-direction: column; align-items: center; gap: 12px; padding-top: 24px; }
+.home-career-pagination p { margin: 0; color: #475467; font-size: 1rem; }
+.home-career-pagination [data-slot=button] { min-height: 48px; padding-inline: 28px; font-size: 1rem; font-weight: 750; }
+@media (max-width: 1000px) { .home-career-dropdown .signal-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 680px) {
+  .home-career-dropdown > summary { padding: 20px; }
+  .home-career-count { display: block; margin: 4px 0 0; }
+  .home-career-content { padding: 0 12px 20px; }
+  .home-career-dropdown .signal-card-grid { grid-template-columns: minmax(0, 1fr); }
+  .home-career-dropdown .signal-career { padding: 22px 18px; }
+}
