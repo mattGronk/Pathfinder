@@ -4,7 +4,7 @@ import { tierFromMetadata, cvSchema, emptyCv, type SavedResult } from "./workspa
 import { redirect } from "next/navigation";
 import {z} from "zod";
 import {loadPrivateRecords,savePrivateRecords} from "./workspace-storage";
-const resultSchema=z.object({id:z.enum(["career","subjects","leadership","personality","learning","eq"]),completedAt:z.string().datetime(),answers:z.array(z.string().max(40)).max(80),scores:z.array(z.object({key:z.string().max(40),label:z.string().max(80),count:z.number().int().min(0).max(80)})).max(12),total:z.number().int().min(1).max(80)});
+const resultSchema=z.object({id:z.enum(["career","subjects","leadership","personality","learning","eq","values","enterprise","study","decisions"]),completedAt:z.string().datetime(),answers:z.array(z.string().max(40)).max(80),scores:z.array(z.object({key:z.string().max(40),label:z.string().max(80),count:z.number().int().min(0).max(80)})).max(12),total:z.number().int().min(1).max(80)});
 export async function readWorkspace() {
   const client = await createAccountClient();
   if (!client) return null;
@@ -15,7 +15,7 @@ export async function readWorkspace() {
   const cv = cvSchema.safeParse(records.pathfinder_cv);
   return { client, user, tier: tierFromMetadata(user.app_metadata), cv: cv.success ? cv.data : emptyCv,
     profile:records.pathfinder_profile,
-    results: z.array(resultSchema).max(6).safeParse(records.pathfinder_results).data??[] as SavedResult[],
+    results: z.array(resultSchema).max(10).safeParse(records.pathfinder_results).data??[] as SavedResult[],
     tasks: z.array(z.enum(["profile","research","conversation","cv"])).max(4).safeParse(records.pathfinder_tasks).data??[] };
 }
 export async function requirePaidWorkspace() {

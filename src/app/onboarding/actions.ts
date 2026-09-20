@@ -14,6 +14,8 @@ export async function saveProfile(_previous: FormResult, data: FormData): Promis
   } catch { return { error: "We could not save your profile. Your changes are still on this page; please try again." }; }
   revalidatePath("/");
   revalidatePath("/onboarding");
+  revalidatePath("/dashboard");
+  revalidatePath("/assessments");
   return { message: "Your profile is saved. You can leave and return to it after signing in." };
 }
 
@@ -26,6 +28,8 @@ export async function eraseProfile(_previous: FormResult, data: FormData): Promi
   } catch { return { error: "The profile service is unavailable. Please try again." }; }
   revalidatePath("/");
   revalidatePath("/onboarding");
+  revalidatePath("/dashboard");
+  revalidatePath("/assessments");
   return { message: "Your saved career profile has been erased. Your password account is unchanged. Reload this page to clear the form." };
 }
 

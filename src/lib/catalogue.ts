@@ -1,4 +1,6 @@
+import { expandedCareers } from "./career-expansion";
 export type CareerProfile = {
+  sourceUrl?: string;
   id: string; title: string; field: string; summary: string; salary: string; demand: string;
   subjects: string[]; qualifications: string[]; skills: string[]; employers: string[]; day: string; outlook: string;
 };
@@ -44,6 +46,8 @@ export const careerCatalogue: CareerProfile[] = roles.map(([id,title,field,summa
   day: `A typical day combines ${skills[0].toLowerCase()}, ${skills[1].toLowerCase()} and clear communication with colleagues or clients.`,
   outlook: `${demand} demand indicator. Confirm current vacancies, registration rules and regional demand before committing.`,
 }));
+
+careerCatalogue.push(...expandedCareers);
 
 export type UniversityProfile = { id:string; name:string; domain:string; location:string; type:string; focus:string; fees:string; url:string };
 export const universityCatalogue: UniversityProfile[] = [

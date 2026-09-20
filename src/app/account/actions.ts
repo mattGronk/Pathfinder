@@ -17,21 +17,22 @@ export async function authenticate(_previous: FormResult, data: FormData): Promi
   if (!parsed.success) {
     const mode = data.get("mode");
     return { error: mode === "signup"
-      ? "Use a valid email, a password of 12–128 characters, and confirm the adult pilot and privacy notice."
+      ? "Use a valid email, a password of 12–128 characters, and complete the account and privacy consent fields. A parent or legal guardian must complete learner consent."
       : mode === "recover" ? "Enter the email address used for your Pathfinder account."
       : mode === "otp" ? "Enter a valid email address for your one-time sign-in link."
       : "Enter your valid email and existing password." };
   }
   const config = accountConfiguration();
   if (!config) return { error: "Password accounts are temporarily unavailable." };
-  const next = safeNext(data.get("next"));
+  const requestedNext = safeNext(data.get("next"));
+  const next = parsed.data.mode === "signup" && requestedNext === "/dashboard" ? "/onboarding" : requestedNext;
   const limit = await checkAuthRateLimit(parsed.data.email, parsed.data.mode);
   if (!limit.allowed) return { error: `Too many attempts. Please wait ${limit.retryMinutes} minutes before trying again.` };
   try {
     const client = await createAccountClient();
     if (!client) return { error: "Password accounts are temporarily unavailable." };
     if (parsed.data.mode === "otp") {
-      const { error } = await client.auth.signInWithOtp({ email: parsed.data.email, options: { emailRedirectTo: `${config.origin}/auth/callback?next=${encodeURIComponent(next)}` } });
+      const { error } = await client.auth.signInWithOtp({ email: parsed.data.email, options: { shouldCreateUser: false, emailRedirectTo: `${config.origin}/auth/callback?next=${encodeURIComponent(next)}` } });
       if (error) return { error: "We could not send the secure sign-in code. Please wait and try again." };
       return { message: "If the address can sign in, a secure one-time sign-in email is on its way. The link expires automatically." };
     } else if (parsed.data.mode === "recover") {
@@ -44,7 +45,10 @@ export async function authenticate(_previous: FormResult, data: FormData): Promi
       const { data: result, error } = await client.auth.signUp({
         email: parsed.data.email,
         password: parsed.data.password,
-        options: { emailRedirectTo: `${config.origin}/auth/callback?next=${encodeURIComponent(next)}` },
+        options: { emailRedirectTo: `${config.origin}/auth/callback?next=${encodeURIComponent(next)}`, data: {
+          pathfinder_consent: {version:"2026-09-18",accountFor:parsed.data.accountFor,acceptedAt:new Date().toISOString(),
+            ...(parsed.data.accountFor==="learner"?{guardianName:parsed.data.guardianName,relationship:parsed.data.guardianRelationship}: {})},
+        } },
       });
       if (error) return { error: "We could not create the account. Try again later, or sign in if you already have one." };
       if (!result.session) return { message: "If this email is new, check your inbox to confirm it. If you already had an account, its password has not changed—sign in or use ‘Forgot your password?’" };
