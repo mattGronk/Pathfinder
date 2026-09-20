@@ -9,6 +9,7 @@ import type { FormResult } from "@/lib/profile";
 import { authenticate } from "./actions";
 
 export default function AccountForm({ next = "/dashboard" }: { next?: string }) {
+  const [accountFor,setAccountFor]=useState("self");
   const [mode, setMode] = useState<"login" | "signup" | "recover" | "otp">("login");
   const [state, action, pending] = useActionState<FormResult, FormData>(authenticate, {});
   return <form action={action} className="profile-form">
@@ -24,7 +25,9 @@ export default function AccountForm({ next = "/dashboard" }: { next?: string }) 
     </>}
     {mode === "signup" && <>
       <p className="account-guidance"><strong>Already tried this email?</strong> Creating it again will not replace its password. Return to sign in and choose “Forgot your password?” instead.</p>
-      <label className="check-label"><Checkbox name="adult" required /> I am 18 or older. Under-18 accounts are not available during the private pilot.</label>
+      <label>Who is this account for?<select name="accountFor" value={accountFor} onChange={e=>setAccountFor(e.target.value)}><option value="self">Myself — I am 18 or older</option><option value="learner">A learner under 18 — with a parent or guardian</option></select></label>
+      {accountFor==="learner"&&<div className="guardian-consent"><h3>For the parent or legal guardian to complete</h3><p>Use an email address you control for this account. We save the learner’s profile, assessment answers and results for private career guidance. Optional CV details are saved when entered. You choose whether to share reports. You can request access, correction or deletion and withdraw consent using the contact in the privacy notice.</p><label>Your full name<Input name="guardianName" required minLength={2} maxLength={100}/></label><label>Your relationship<select name="guardianRelationship" required defaultValue=""><option value="" disabled>Select relationship</option><option value="parent">Parent</option><option value="guardian">Legal guardian</option></select></label><label className="check-label"><Checkbox name="guardianConsent" required/><span>I am the parent or legal guardian named above and am legally competent to consent for this learner. I consent to the storage and use of their information described above and in the privacy notice.</span></label></div>}
+      <label className="check-label"><Checkbox name="adult" required />{accountFor==="learner"?"I am the adult parent or legal guardian completing this account setup.":"I confirm I am 18 or older."}</label>
       <label className="check-label"><Checkbox name="privacy" required /><span>I have read the <Link href="/privacy">privacy notice</Link> and agree to account and pathway data storage.</span></label>
     </>}
     <div aria-live="polite">{state.error && <p className="form-error" role="alert">{state.error}</p>}{state.message && <p className="form-success">{state.message}</p>}</div>

@@ -12,4 +12,12 @@
 @media(prefers-reduced-motion:reduce){.workspace-loading>div,.workspace-loading section div{animation:none}}
 @media print{@page{size:A4;margin:15mm}html,body{background:white!important}.workspace{display:block!important;background:white!important}.workspace-sidebar,.workspace-topbar,.workspace-demo,.workspace-title,.workspace-notice,.report-controls,.cv-toolbar,.cv-editor,.workspace-note{display:none!important}.workspace-main{margin:0!important;width:100%!important}.workspace-content{max-width:none!important;padding:0!important;margin:0!important}.cv-studio{display:block!important}.print-document{border:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important;max-width:none!important;width:100%!important;min-height:0!important;padding:0!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}.guidance-report>header,.report-title,.report-result,.report-signals,.report-write-lines,.cv-paper section{break-inside:avoid}.guidance-report p,.guidance-report li{font-size:10pt}.cv-paper p{font-size:10pt}.cv-paper header p:last-child{font-size:9pt}.cv-modern header{margin:0 0 25px!important;padding:22px!important}.cv-paper section h3{font-size:10pt}.cv-paper h2{font-size:26pt}.workspace.view-overview .workspace-content:after,.workspace.view-careers .workspace-content:after{content:"Use My reports or CV studio to export a document."}}
 
-.university-logo-frame img{background:transparent;border-radius:0}.university-sample img{background:transparent}.signal-nav>nav{gap:15px}.signal-nav>nav a{font-size:.7rem}@media(max-width:1150px){.signal-nav>nav{display:none}.signal-nav{grid-template-columns:1fr auto}}
+.university-logo-frame img{background:transparent;border-radius:0}.university-sample img{background:transparent}.signal-nav>nav{gap:15px}.signal-nav>nav a{font-size: 0.95rem}@media(max-width:1150px){.signal-nav>nav{display:none}.signal-nav{grid-template-columns:1fr auto}}
+
+.workspace-sidebar nav button {font-size:1.05rem;font-weight:800;}
+.workspace-note,.workspace-panel small {font-size:.95rem;}
+.workspace-button {white-space:normal;}
+
+.signal-nav>nav a,.signal-nav .nav-text {font-size:1.1rem;font-weight:800;}
+@media(max-width:1200px){.signal-nav>nav {display:flex;flex-basis:100%;order:3;flex-wrap:wrap;justify-content:flex-start;gap:12px 20px;}}
+@media(max-width:680px){.signal-nav>nav a {font-size:1rem;padding-block:6px;}.signal-nav>div .nav-text {display:inline;}}

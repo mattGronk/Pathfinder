@@ -1,6 +1,8 @@
 "use server";
 import { readWorkspace, updateOwnedMetadata } from "@/lib/workspace-server";
 import { cvSchema } from "@/lib/workspace-model";
+import { canTakeAssessment } from "@/lib/assessment-access";
+import { scoreAnswers } from "@/lib/assessment-scoring";
 import { assessmentSuite } from "@/lib/assessment-suite";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
@@ -10,12 +12,12 @@ export async function saveSuiteResult(input: unknown) {
   if (!state || state.tier === "free") return { error: "Sign in with a paid account to save your results." };
   if (!parsed.success) return { error: "Please complete every question." };
   const assessment = assessmentSuite.find(a => a.id === parsed.data.id);
-  if (!assessment || (state.tier !== "full" && assessment.id !== "career")) return { error: "This assessment needs Trailblazer access." };
+  if (!assessment || !canTakeAssessment(state.tier, assessment.id)) return { error: "This assessment needs Trailblazer access." };
   const answers = parsed.data.answers;
-  if (answers.length !== assessment.questions.length || answers.some((a, i) => !assessment.questions[i].options.some(o => o.signal === a))) return { error: "Please complete every question with a valid response." };
-  const scores = Object.entries(assessment.signals).map(([key, label]) => ({ key, label, count: answers.filter(a => a === key).length })).sort((a,b) => b.count-a.count);
+  const scores = scoreAnswers(assessment, answers);
+  if (!scores) return { error: "Please complete every question with a valid response." };
   const result = { id: assessment.id, answers, scores, total: answers.length, completedAt: new Date().toISOString() };
-  try { await updateOwnedMetadata(state.user.id, { pathfinder_results: [...state.results.filter(r => r.id !== assessment.id), result] }); revalidatePath("/dashboard"); return { message: "Results saved. Your reports are ready in the dashboard." }; }
+  try { await updateOwnedMetadata(state.user.id, { pathfinder_results: [...state.results.filter(r => r.id !== assessment.id), result] }); revalidatePath("/dashboard"); revalidatePath("/assessments"); return { message: "Saved to your reports. This assessment is complete." }; }
   catch { return { error: "Your result is shown here, but saving failed. Please try again." }; }
 }
 export async function saveCv(input: unknown) {
