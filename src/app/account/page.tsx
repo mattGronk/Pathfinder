@@ -2,6 +2,7 @@ import Link from "next/link";
 import { accountConfiguration, getPathfinderAccount } from "@/lib/supabase/server";
 import AccountForm from "./account-form";
 import { signOut } from "./actions";
+import AccountProducts from "./products";
 
 export const dynamic = "force-dynamic";
 
@@ -24,5 +25,6 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
       <Link className="profile-link" href="/assessments">Continue my assessments →</Link>
       <form action={signOut}><button className="text-link" type="submit">Sign out</button></form>
     </section> : accountConfiguration() ? <AccountForm next={next} /> : <section className="profile-form"><h2>Accounts are temporarily unavailable.</h2><p>Please return later. No password has been collected.</p></section>}
+    {account && <AccountProducts />}
   </main>;
 }

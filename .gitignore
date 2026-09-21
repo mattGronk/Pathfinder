@@ -7,5 +7,6 @@ dist/
 coverage/
 *.tsbuildinfo
 *.log
+supabase/.temp/
 .DS_Store
 Thumbs.db

@@ -24,5 +24,5 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
-export const config = { matcher: ["/", "/account/:path*", "/onboarding/:path*", "/assessment/:path*", "/auth/:path*"] };
+export const config = { matcher: ["/", "/account/:path*", "/onboarding/:path*", "/assessment/:path*", "/assessments/:path*", "/dashboard/:path*", "/admin/:path*", "/upgrade/:path*", "/api/paystack/:path*", "/auth/:path*"] };
 

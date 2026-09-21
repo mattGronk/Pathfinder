@@ -18,7 +18,7 @@ export async function POST(request:Request){
     if(!response.ok||!result.status||tier==="free"||result.data?.metadata?.pathfinder_user!==state.user.id)return NextResponse.json({error:"We could not confirm a Pathfinder checkout for this account. For an older payment-page receipt, contact pathfinderzar@gmail.com."},{status:402});
     const grantedTier=state.tier==="full"?"full":tier;
     const admin=createClient(process.env.SUPABASE_URL,adminKey,{auth:{persistSession:false,autoRefreshToken:false}});
-    const {error}=await admin.auth.admin.updateUserById(state.user.id,{app_metadata:{...state.user.app_metadata,pathfinder_access:{tier:grantedTier,reference:body.reference,paidAt:result.data?.paid_at}}});
+    const {error}=await admin.rpc("pathfinder_record_payment",{p_user:state.user.id,p_slug:tier==="full"?"trailblazer":"hatchling",p_provider:"paystack",p_reference:body.reference});
     if(error)throw new Error();
     return NextResponse.json({message:`${grantedTier==="full"?"Trailblazer":"Hatchling"} access is active on your account.`,tier:grantedTier},{headers:{"Cache-Control":"no-store"}});
   }catch{return NextResponse.json({error:"Verification is temporarily unavailable. Your payment has not been retried. Please reload this page shortly."},{status:502});}
