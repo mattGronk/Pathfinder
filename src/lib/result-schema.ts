@@ -1,0 +1,2 @@
+import { z } from "zod";
+export const resultSchema = z.object({ id: z.enum(["career", "subjects", "leadership", "personality", "learning", "eq", "values", "enterprise", "study", "decisions"]), completedAt: z.string().datetime(), answers: z.array(z.string().max(40)).max(80), scores: z.array(z.object({ key: z.string().max(40), label: z.string().max(80), count: z.number().int().min(0).max(80) })).max(12), total: z.number().int().min(1).max(80) });

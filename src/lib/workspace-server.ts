@@ -1,6 +1,8 @@
 import "server-only";
 import { createAccountClient } from "@/lib/supabase/server";
-import { tierFromMetadata, cvSchema, emptyCv, type SavedResult } from "./workspace-model";
+import { cvSchema, emptyCv, type SavedResult } from "./workspace-model";
+import { readEntitlements } from "./entitlements-server";
+import { createServiceClient } from "./supabase/service";
 import { redirect } from "next/navigation";
 import {z} from "zod";
 import {loadPrivateRecords,savePrivateRecords} from "./workspace-storage";
@@ -11,9 +13,9 @@ export async function readWorkspace() {
   const { data, error } = await client.auth.getUser();
   if (error || !data.user || !data.user.email) return null;
   const user = data.user;
-  const records=await loadPrivateRecords(user.id);
+  const [records, access] = await Promise.all([loadPrivateRecords(user.id), readEntitlements(client, user.id)]);
   const cv = cvSchema.safeParse(records.pathfinder_cv);
-  return { client, user, tier: tierFromMetadata(user.app_metadata), cv: cv.success ? cv.data : emptyCv,
+  return { client, user, tier: access.tier, entitlements: access.entitlements, cv: cv.success ? cv.data : emptyCv,
     profile:records.pathfinder_profile,
     results: z.array(resultSchema).max(10).safeParse(records.pathfinder_results).data??[] as SavedResult[],
     tasks: z.array(z.enum(["profile","research","conversation","cv"])).max(4).safeParse(records.pathfinder_tasks).data??[] };
@@ -35,4 +37,9 @@ export async function updateOwnedMetadata(userId: string, values: Record<string,
   const client=await createAccountClient();const result=await client?.auth.getUser();
   if(!result||result.error||result.data.user?.id!==userId)throw new Error("Please sign in again.");
   await savePrivateRecords(userId,values);
+  if ("pathfinder_profile" in values) {
+    const profile = values.pathfinder_profile as { displayName?: string } | null;
+    const { error } = await createServiceClient().from("pathfinder_directory").update({ display_name: profile?.displayName ?? "", name_indexed_at: new Date().toISOString() }).eq("user_id", userId);
+    if (error) throw new Error("Your profile was saved, but the account name could not be updated. Please save again.");
+  }
 }
